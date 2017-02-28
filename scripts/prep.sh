@@ -23,7 +23,6 @@ createMasterSubnet()
         --resource-group acs-swarmm-vnet \
         --vnet-name swarmm-vnet \
         --address-prefix 172.17.0.0/25
-        --query "[?provisioningState=='Succeeded'].{ id: id }"
 }
 
 createAgentSubnet()
@@ -33,7 +32,6 @@ createAgentSubnet()
         --resource-group acs-swarmm-vnet \
         --vnet-name swarmm-vnet \
         --address-prefix 172.17.0.128/25
-        --query "[?provisioningState=='Succeeded'].{ id: id }"
 }
 
 
