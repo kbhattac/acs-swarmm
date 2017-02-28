@@ -1,0 +1,32 @@
+{
+    "agentpublicCount": {
+        "value": 3
+    },
+    "agentpublicEndpointDNSNamePrefix": {
+        "value": "swarmm-agent-vnet"
+    },
+    "agentpublicVMSize": {
+        "value": "Standard_D2_v2"
+    },
+    "agentpublicVnetSubnetID": {
+        "value": "/subscriptions/xxx/resourceGroups/RG/providers/Microsoft.Network/virtualNetworks/VNET/subnets/AGENT-SUBNET"
+    },
+    "firstConsecutiveStaticIP": {
+        "value": "172.17.0.5"
+    },
+    "linuxAdminUsername": {
+        "value": "azureuser"
+    },
+    "masterEndpointDNSNamePrefix": {
+        "value": "swarmm-master-vnet"
+    },
+    "masterVMSize": {
+        "value": "Standard_D2_v2"
+    },
+    "masterVnetSubnetID": {
+        "value": "/subscriptions/xxx/resourceGroups/RG/providers/Microsoft.Network/virtualNetworks/VNET/subnets/MASTER-SUBNETr"
+    },
+    "sshRSAPublicKey": {
+        "value": "ssh-rsa XXX azureuser@linuxvm"
+    }
+}

@@ -1,0 +1,47 @@
+{
+  "apiVersion": "vlabs",
+  "plan": {},
+  "properties": {
+    "provisioningState": "",
+    "orchestratorProfile": {
+      "orchestratorType": "SwarmMode"
+    },
+    "masterProfile": {
+      "count": 1,
+      "dnsPrefix": "swarmm-master-vnet",
+      "vmSize": "Standard_D2_v2",
+      "vnetSubnetID": "/subscriptions/2e06cca1-6322-4b36-85b0-d933d6b0b6a9/resourceGroups/acs-swarmm-vnet/providers/Microsoft.Network/virtualNetworks/swarmm-vnet/subnets/master",
+      "firstConsecutiveStaticIP": "172.17.0.5"
+    },
+    "agentPoolProfiles": [
+      {
+        "name": "agentpublic",
+        "count": 3,
+        "vmSize": "Standard_D2_v2",
+        "dnsPrefix": "swarmm-agent-vnet",
+        "osType": "Linux",
+        "ports": [
+          80,
+          443,
+          8080
+        ],
+        "availabilityProfile": "VirtualMachineScaleSets",
+        "storageProfile": "ManagedDisks",
+        "vnetSubnetID": "/subscriptions/2e06cca1-6322-4b36-85b0-d933d6b0b6a9/resourceGroups/acs-swarmm-vnet/providers/Microsoft.Network/virtualNetworks/swarmm-vnet/subnets/agent"
+      }
+    ],
+    "linuxProfile": {
+      "adminUsername": "azureuser",
+      "ssh": {
+        "publicKeys": [
+          {
+            "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAlGoL/6jVVV1ijMdQ7erMIm3oUY+DKzl9+cdFOAoVIXek/Aza0xb+DsOzr7dx8FIoaLHeUw3rmcPjD8RE0WOjnm4M/XEthxTcPKNW0WywTwAqGmqYK7mCov4R7pgtJ/XaR6RPAEagl/hj4Amixv0iyrIwGaOy8yJbbUjCVLIDz2504WBvhRAoQ7uHLnKunCSWmlL5mkje6yLHJlBxitxInUt7kvFgh3Pe3i4fg7oehoPjesf2hWNiyONB48uEW6m+CAVKmGOnD405IrumqVKsvWOu6uBqRVFwcRjLm3wmPEpULb5IcqV4nBTQUwwe6UJoIjrSDL/pl5XogIGlFdvt2w== azureuser@linuxvm"
+          }
+        ]
+      }
+    },
+    "windowsProfile": {},
+    "servicePrincipalProfile": {},
+    "certificateProfile": {}
+  }
+}
