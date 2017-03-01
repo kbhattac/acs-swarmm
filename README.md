@@ -1,5 +1,5 @@
 # acs-swarmm
-Swarm Mode orchestrator with VMSS, Managed Disks, Custom VNETs
+Swarm Mode orchestrator with VMSS and Managed Disks
 ## Requires pre-provisioned resource group with VNET and subnets
 - See /scripts dir for provisioning scripts
 - Use /scripts/prep.sh for pre-provisioining resources before clicking on **Deploy to Azure**
