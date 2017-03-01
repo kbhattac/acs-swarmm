@@ -8,16 +8,17 @@
     },
     "masterProfile": {
       "count": 1,
-      "dnsPrefix": "swarmm-master-01",
+      "dnsPrefix": "swarmm-master-vnet",
       "vmSize": "Standard_D2_v2",
-      "firstConsecutiveStaticIP": "172.16.0.5"
+      "vnetSubnetID": "/subscriptions/2e06cca1-6322-4b36-85b0-d933d6b0b6a9/resourceGroups/acs-swarmm-vnet/providers/Microsoft.Network/virtualNetworks/swarmm-vnet/subnets/master",
+      "firstConsecutiveStaticIP": "172.17.0.5"
     },
     "agentPoolProfiles": [
       {
         "name": "agentpublic",
         "count": 3,
         "vmSize": "Standard_D2_v2",
-        "dnsPrefix": "swarmm-agent-01",
+        "dnsPrefix": "swarmm-agent-vnet",
         "osType": "Linux",
         "ports": [
           80,
@@ -25,7 +26,8 @@
           8080
         ],
         "availabilityProfile": "VirtualMachineScaleSets",
-        "storageProfile": "ManagedDisks"
+        "storageProfile": "ManagedDisks",
+        "vnetSubnetID": "/subscriptions/2e06cca1-6322-4b36-85b0-d933d6b0b6a9/resourceGroups/acs-swarmm-vnet/providers/Microsoft.Network/virtualNetworks/swarmm-vnet/subnets/agent"
       }
     ],
     "linuxProfile": {
