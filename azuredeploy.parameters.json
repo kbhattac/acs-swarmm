@@ -3,28 +3,28 @@
     "value": 3
   },
   "agentpublicEndpointDNSNamePrefix": {
-    "value": "swarmm-agent-vnet"
+    "value": "swarmm-agent-01"
+  },
+  "agentpublicSubnet": {
+    "value": "10.0.0.0/16"
   },
   "agentpublicVMSize": {
     "value": "Standard_D2_v2"
   },
-  "agentpublicVnetSubnetID": {
-    "value": "/subscriptions/2e06cca1-6322-4b36-85b0-d933d6b0b6a9/resourceGroups/acs-swarmm-vnet/providers/Microsoft.Network/virtualNetworks/swarmm-vnet/subnets/agent"
-  },
   "firstConsecutiveStaticIP": {
-    "value": "172.17.0.5"
+    "value": "172.16.0.5"
   },
   "linuxAdminUsername": {
     "value": "azureuser"
   },
   "masterEndpointDNSNamePrefix": {
-    "value": "swarmm-master-vnet"
+    "value": "swarmm-master-01"
+  },
+  "masterSubnet": {
+    "value": "172.16.0.0/24"
   },
   "masterVMSize": {
     "value": "Standard_D2_v2"
-  },
-  "masterVnetSubnetID": {
-    "value": "/subscriptions/2e06cca1-6322-4b36-85b0-d933d6b0b6a9/resourceGroups/acs-swarmm-vnet/providers/Microsoft.Network/virtualNetworks/swarmm-vnet/subnets/master"
   },
   "sshRSAPublicKey": {
     "value": "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAlGoL/6jVVV1ijMdQ7erMIm3oUY+DKzl9+cdFOAoVIXek/Aza0xb+DsOzr7dx8FIoaLHeUw3rmcPjD8RE0WOjnm4M/XEthxTcPKNW0WywTwAqGmqYK7mCov4R7pgtJ/XaR6RPAEagl/hj4Amixv0iyrIwGaOy8yJbbUjCVLIDz2504WBvhRAoQ7uHLnKunCSWmlL5mkje6yLHJlBxitxInUt7kvFgh3Pe3i4fg7oehoPjesf2hWNiyONB48uEW6m+CAVKmGOnD405IrumqVKsvWOu6uBqRVFwcRjLm3wmPEpULb5IcqV4nBTQUwwe6UJoIjrSDL/pl5XogIGlFdvt2w== azureuser@linuxvm"

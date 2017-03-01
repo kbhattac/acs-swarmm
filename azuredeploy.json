@@ -117,6 +117,13 @@
       },
       "type": "string"
     },
+    "agentpublicSubnet": {
+      "defaultValue": "10.0.0.0/16",
+      "metadata": {
+        "description": "Sets the subnet of agent pool 'agentpublic'."
+      },
+      "type": "string"
+    },
     "agentpublicVMSize": {
       "allowedValues": [
         "Basic_A2",
@@ -208,14 +215,8 @@
       },
       "type": "string"
     },
-    "agentpublicVnetSubnetID": {
-      "metadata": {
-        "description": "Sets the vnet subnet of agent pool 'agentpublic'."
-      },
-      "type": "string"
-    },
     "firstConsecutiveStaticIP": {
-      "defaultValue": "172.17.0.5",
+      "defaultValue": "172.16.0.5",
       "metadata": {
         "description": "Sets the static IP of the first master"
       },
@@ -230,6 +231,13 @@
     "masterEndpointDNSNamePrefix": {
       "metadata": {
         "description": "Sets the Domain name label for the master IP Address.  The concatenation of the domain name label and the regional DNS zone make up the fully qualified domain name associated with the public IP address."
+      },
+      "type": "string"
+    },
+    "masterSubnet": {
+      "defaultValue": "172.16.0.0/24",
+      "metadata": {
+        "description": "Sets the subnet of the master node(s)."
       },
       "type": "string"
     },
@@ -323,14 +331,8 @@
       },
       "type": "string"
     },
-    "masterVnetSubnetID": {
-      "metadata": {
-        "description": "Sets the vnet subnet of the master."
-      },
-      "type": "string"
-    },
     "nameSuffix": {
-      "defaultValue": "26184670",
+      "defaultValue": "24648798",
       "metadata": {
         "description": "A string hash of the master DNS name to uniquely identify the cluster."
       },
@@ -359,9 +361,11 @@
     "agentpublicLbIPConfigName": "[concat(variables('orchestratorName'), '-agentpublic-', variables('nameSuffix'))]",
     "agentpublicLbName": "[concat(variables('orchestratorName'), '-agentpublic-', variables('nameSuffix'))]",
     "agentpublicStorageAccountsCount": "[variables('maxStorageAccountsPerAgent')]",
+    "agentpublicSubnet": "[parameters('agentpublicSubnet')]",
+    "agentpublicSubnetName": "[concat(variables('orchestratorName'), '-agentpublicsubnet')]",
     "agentpublicVMNamePrefix": "[concat(variables('orchestratorName'), '-agentpublic-', variables('nameSuffix'))]",
     "agentpublicVMSize": "[parameters('agentpublicVMSize')]",
-    "agentpublicVnetSubnetID": "[parameters('agentpublicVnetSubnetID')]",
+    "agentpublicVnetSubnetID": "[concat(variables('vnetID'),'/subnets/',variables('agentpublicSubnetName'))]",
     "apiVersionDefault": "2016-03-30",
     "apiVersionStorage": "2015-06-15",
     "apiVersionStorageManagedDisks": "2016-04-30-preview",
@@ -415,9 +419,11 @@
     "masterSshPort22InboundNatRuleIdPrefix": "[concat(variables('masterLbID'),'/inboundNatRules/SSHPort22-',variables('masterVMNamePrefix'))]",
     "masterSshPort22InboundNatRuleNamePrefix": "[concat(variables('masterLbName'),'/SSHPort22-',variables('masterVMNamePrefix'))]",
     "masterStorageAccountName": "[concat(variables('storageAccountBaseName'), '0')]",
+    "masterSubnet": "[parameters('masterSubnet')]",
+    "masterSubnetName": "[concat(variables('orchestratorName'), '-masterSubnet')]",
     "masterVMNamePrefix": "[concat(variables('orchestratorName'), '-master-', variables('nameSuffix'), '-')]",
     "masterVMSize": "[parameters('masterVMSize')]",
-    "masterVnetSubnetID": "[parameters('masterVnetSubnetID')]",
+    "masterVnetSubnetID": "[concat(variables('vnetID'),'/subnets/',variables('masterSubnetName'))]",
     "maxStorageAccountsPerAgent": "[div(variables('maxVMsPerPool'),variables('maxVMsPerStorageAccount'))]",
     "maxVMsPerPool": 100,
     "maxVMsPerStorageAccount": 20,
@@ -470,6 +476,7 @@
       "z"
     ],
     "storageAccountPrefixesCount": "[length(variables('storageAccountPrefixes'))]",
+    "virtualNetworkName": "[concat(variables('orchestratorName'), '-vnet-', variables('nameSuffix'))]",
     "vmSizesMap": {
       "Basic_A2": {
         "storageAccountType": "Standard_LRS"
@@ -718,7 +725,8 @@
         "storageAccountType": "Standard_LRS"
       }
     },
-    "vmsPerStorageAccount": 20
+    "vmsPerStorageAccount": 20,
+    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]"
   },
   "resources": [
     {
@@ -855,6 +863,7 @@
       "apiVersion": "[variables('apiVersionStorageManagedDisks')]",
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('masterPublicIPAddressName'))]",
+        "[variables('vnetID')]",
         "[variables('agentpublicLbID')]"
       ],
       "location": "[resourceGroup().location]",
@@ -940,6 +949,34 @@
         "accountType": "[variables('vmSizesMap')[variables('masterVMSize')].storageAccountType]"
       },
       "type": "Microsoft.Storage/storageAccounts"
+    },
+    {
+      "apiVersion": "[variables('apiVersionDefault')]",
+      "location": "[resourceGroup().location]",
+      "name": "[variables('virtualNetworkName')]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('masterSubnet')]",
+            "[variables('agentpublicSubnet')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('masterSubnetName')]",
+            "properties": {
+              "addressPrefix": "[variables('masterSubnet')]"
+            }
+          },
+          {
+            "name": "[variables('agentpublicSubnetName')]",
+            "properties": {
+              "addressPrefix": "[variables('agentpublicSubnet')]"
+            }
+          }
+        ]
+      },
+      "type": "Microsoft.Network/virtualNetworks"
     },
     {
       "apiVersion": "[variables('apiVersionDefault')]",
@@ -1033,6 +1070,7 @@
         "name": "nicLoopNode"
       },
       "dependsOn": [
+        "[variables('vnetID')]",
         "[variables('masterLbID')]",
         "[concat(variables('masterSshPort22InboundNatRuleIdPrefix'),'0')]",
         "[concat(variables('masterSshInboundNatRuleIdPrefix'),copyIndex())]"
