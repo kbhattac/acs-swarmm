@@ -1,8 +1,6 @@
 # acs-swarmm
 Swarm Mode orchestrator with VMSS and Managed Disks
 ## Requires pre-provisioned resource group with VNET and subnets
-- See /scripts dir for provisioning scripts
-- Use /scripts/prep.sh for pre-provisioining resources before clicking on **Deploy to Azure**
 - Generated with [acs-engine](https://github.com/Azure/acs-engine)
 - Installs Docker CS
 - For setting up monitoring see [monitoring](https://github.com/kbhattmsft/autoscaling)
